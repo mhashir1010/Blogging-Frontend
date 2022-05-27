@@ -1,0 +1,24 @@
+.auth-container{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(23, 168, 240);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.auth-card{
+    display: flex;
+    background-color: rgb(120, 244, 248);
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border: 6px solid white;
+    border-radius: 15%;
+    height: 65vh;
+    width: 25vw;
+    font-family:monospace;
+}
+.auth-card h1{
+    color: rgb(122, 62, 145);
+    text-decoration-thickness : 100px;
+}
