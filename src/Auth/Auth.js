@@ -1,36 +1,55 @@
-import { useState, useEffect } from "react"
-import { Link ,useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState    } from "react"
+import {  useNavigate } from "react-router-dom";
+import { useUserData } from "../Store/Store";
 import './Auth.css'
 
+
 export const Auth = () => {
+    const {login} = useUserData();
     const navigate = useNavigate();
     const [title,setTitle] = useState('Log In');
     var [isSignUp,setIsSignUp]=useState(false);
+    const [isLoading,setIsLoading] = useState(false);
     
     const [fName,setfName] = useState('')
     const [lName,setlName] = useState('')
-    const [email, seteMail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [cnfrmPassword, setCnfrmPassword] = useState('');
     
-    const [signUpData, setSignUpData] = useState();
-    const [data, setData] = useState();
-
-    
-    const submitHandler = async (event) => {
+    const submitHandler =  (event) => {
         if(isSignUp){
-        await setSignUpData({firstName:fName , lastName:lName, email: email, password: password })
-        event.preventDefault();
+            console.log('signup');
+            event.preventDefault();
         }else{
-        await setData({ email: email, password: password })
+            console.log(userName,password);
+            setIsLoading(true);
+            axios.post('https://dummyjson.com/auth/login',{ username: userName, password: password }).then(res=>{
+                    console.log(res);
+                    setIsLoading(false);
+                    login(res.data)
+                    localStorage.setItem(`token`, res.data.token);
+                    navigate('/home');
+                },err=>{
+                    setIsLoading(false);
+                }
+            )         
         event.preventDefault();
         }
     }
-    useEffect(() => {
-        if(data || signUpData){
-            navigate("/home")
-        }
-    }, [data,signUpData])
+
+    // useEffect(()=>{
+        
+    //     // console.log(data);
+    //     },[data,signUpData])
+    // useEffect(() => {
+    //     console.log(signUpData);
+    //     console.log(data);
+    //     if(data || signUpData){
+    //         navigate("/home")
+    //     }
+    // })
     return (
         <>
             <div className="col-xs-1 auth-container">
@@ -49,16 +68,16 @@ export const Auth = () => {
                         <h1>{title}</h1>
                         {isSignUp && <span><div className="form-group">
                         <label>First Name</label>
-                        <input type="text" value={fName} onChange={(e)=>setfName(e.target.value)} className="form-control" placeholder="Enter Username" />
+                        <input type="text" value={fName} onChange={(e)=>setfName(e.target.value)} className="form-control" placeholder="Enter FirstName" />
                         </div>
                         <div className="form-group">
                         <label>Last Name</label>
-                        <input type="text" value={lName} onChange={(e)=>setlName(e.target.value)} className="form-control" placeholder="Enter Username" />
+                        <input type="text" value={lName} onChange={(e)=>setlName(e.target.value)} className="form-control" placeholder="Enter LastName" />
                         </div></span>
                         }
                         <div className="form-group">
-                        <label>Email address</label>
-                        <input type="email" value={email} onChange={(e)=>seteMail(e.target.value)} className="form-control" placeholder="Enter Username" />
+                        <label>username address</label>
+                        <input type="username" value={userName} onChange={(e)=>setUserName(e.target.value)} className="form-control" placeholder="Enter Username" />
                         </div>
                         <div className="form-group">
                         <label >Password</label>
@@ -69,11 +88,11 @@ export const Auth = () => {
                         <input type="password" value={cnfrmPassword} onChange={(e)=>setCnfrmPassword(e.target.value)} className="form-control" placeholder="Confirm Password"/>
                         </div>}
                         <div>
-                            <button type="submit" className="btn btn-primary">{title}</button>
+                            <button type="submit" className={"btn btn-primary"+(isLoading?'disabled':'')} >{title}</button>
                         </div>
                         <br/>
-                        {!isSignUp &&<a href onClick={()=>{setIsSignUp(true);seteMail('');setPassword('');setTitle('Sign Up');}} >Didn't have an account? Sign Up</a>}
-                        { isSignUp &&<a href onClick={()=>{setIsSignUp(false);seteMail('');setPassword('');setTitle('Log In');}} >Already Have an Account? Log In</a>}
+                        {!isSignUp &&<a href onClick={()=>{setIsSignUp(true);setUserName('');setPassword('');setTitle('Sign Up');}} >Didn't have an account? Sign Up</a>}
+                        { isSignUp &&<a href onClick={()=>{setIsSignUp(false);setUserName('');setPassword('');setTitle('Log In');}} >Already Have an Account? Log In</a>}
                     </form>
                 </div>
             </div>
