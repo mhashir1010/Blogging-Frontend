@@ -7,7 +7,6 @@ import { Home } from "../Home/Home";
 export const PrivateRoute =(props) =>{
     let token= localStorage.getItem('token');
     if(token!==null){
-        console.log(token);
         return  <Outlet />
     }else{
         return  <Navigate to='/auth' />
@@ -22,7 +21,7 @@ export const Private2Route = ({children}) =>{
 
 export const NoAuthGaurd =(props)=>{
     let token = localStorage.getItem('token');
-    console.log(token[0]);
+    // console.log(token[0]);
     if(token!==null){
         return <Navigate to='/home' />
     }else{

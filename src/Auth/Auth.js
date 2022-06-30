@@ -20,13 +20,10 @@ export const Auth = () => {
     
     const submitHandler =  (event) => {
         if(isSignUp){
-            console.log('signup');
             event.preventDefault();
         }else{
-            console.log(userName,password);
             setIsLoading(true);
             axios.post('https://dummyjson.com/auth/login',{ username: userName, password: password }).then(res=>{
-                    console.log(res);
                     setIsLoading(false);
                     login(res.data)
                     localStorage.setItem(`token`, res.data.token);

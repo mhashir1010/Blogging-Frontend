@@ -17,29 +17,29 @@ export const ProfileImage = (props) =>{
         <Modal.Body centered="true" className='p-0 opacity-10' style={{backgroundColor:"#000"}}>
         <div className="rounded card p-0">
             <div className="p-0" >
-                <img src="https://images.pexels.com/photos/2746187/pexels-photo-2746187.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" loading='eager' />
+                <img src={props?.image} alt="" loading='eager' />
             </div>
-            <div className="card-content d-flex flex-column align-items-center">
+            <div className="card-content d-flex text-dark flex-column align-items-center">
                 <h4 className="pt-2">SomeOne Famous</h4>
                 <h5>Creative Desinger</h5>
 
-                <ul className="social-icons d-flex justify-content-center">
+                {/* <ul className="social-icons d-flex justify-content-center">
                     <li>
                         <a href="#">
-                            <span className="fab fa-facebook-f"></span>
+                            <span className="fab fa-facebook-f text-dark"></span>
                         </a>
                     </li>
                     <li >
                         <a href="#">
-                            <span className="fab fa-twitter"></span>
+                            <span className="fab fa-twitter text-dark"></span>
                         </a>
                     </li>
                     <li >
                         <a href="#">
-                            <span className="fab fa-instagram"></span>
+                            <span className="fab fa-instagram text-dark"></span>
                         </a>
                     </li>
-                </ul>
+                </ul> */}
             </div>
         </div>
         </Modal.Body>

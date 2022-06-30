@@ -27,7 +27,6 @@ export const Requests = () =>{
         setIsLoading(true);
         axios.get(`https://dummyjson.com/users/search?q=${query}&limit=6`).then(res=>{
             setRequests(res.data.users);
-            console.log(res.data.users);
             setIsLoading(false)
         })
     },[query])
