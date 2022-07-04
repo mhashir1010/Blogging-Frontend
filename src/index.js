@@ -5,13 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'font-awesome/css/font-awesome.min.css';
 import { Store } from './Store/Store';
+import { Provider } from 'react-redux';
+import { ReduxStore } from './Store/ReduxStore';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
     <Store>
-      <App />
+      <Provider store={ReduxStore}>
+        <App />
+      </Provider>
     </Store>
   // </React.StrictMode>
 );

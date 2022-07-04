@@ -1,21 +1,25 @@
 import { Container, Dropdown, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useUserData } from "../Store/Store"
+import { delUser, setUser } from "../Store/Actions/UserActions";
+import { ReduxStore } from "../Store/ReduxStore";
+import { useUserData } from "../Store/Store";
 
 export const Header = () =>{
     const navigate = useNavigate();
-    const {user,logout} = useUserData();
+    var user = ReduxStore.getState().user.user;
+    if(user===undefined){
+        setUser();
+    }
+
     const Logout = ()=>
     {
-        localStorage.removeItem('token');
-        logout();
+        localStorage.removeItem('x-access-token');
+        localStorage.removeItem('userId');
+        delUser();
+        // logout();
         navigate('/auth')
     }
     
-  // var links = [
-  //   { title: 'Home', route: '/home', active: true },
-  //   { title: 'Requests', route: '/requests', active: false },
-  // ];
     return(
         <>
         <Navbar collapseOnSelect expand="lg" bg="light" >
@@ -28,12 +32,12 @@ export const Header = () =>{
                         <Nav.Link href="" onClick={()=>navigate('/requests')} aria-current="page">Requests</Nav.Link>
                     </Nav>
                     <Nav>
-                        <NavDropdown title={user.firstName+' '+user.lastName} id="collasible-nav-dropdown">
+                        {user && <NavDropdown title={user?.firstName+' '+user?.lastName} id="collasible-nav-dropdown">
                             <NavDropdown.Item href="" onClick={()=>navigate('/profile')}>Profile</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="" onClick={Logout}>Logout</NavDropdown.Item>
-                        </NavDropdown>
+                        </NavDropdown>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

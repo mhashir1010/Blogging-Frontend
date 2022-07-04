@@ -12,13 +12,17 @@ function App() {
     // <UserContext.Provider value={UserContext}>
       <Router>
       <Routes>
-          <Route path="/home" element={<PrivateRoute />}>
-            <Route path='/home' element={<Home></Home>}/>
-          </Route>
+          {/* <Route path="/home" element={<PrivateRoute />}> */}
+            <Route path='/home' element={<Private2Route>  <Home></Home> </Private2Route> }/>
+          {/* </Route> */}
           <Route path='/profile' element={<Private2Route> <Profile /> </Private2Route>} />
+
+          <Route path='/requests' element={<Private2Route>  <Requests></Requests> </Private2Route> }/>
+
+{/* 
           <Route path="/requests" element={<PrivateRoute />} >
             <Route path='/requests' element={<Requests />}/>
-          </Route>
+          </Route> */}
 
           <Route path='/auth' element={<NoAuthGaurd path='/auth'/>}>
             <Route path='/auth'  element={<Auth />}/>

@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Post } from '../Shared/Post';
 import { Loader } from '../Shared/Loader';
+import { ReduxStore } from '../Store/ReduxStore';
 export const Profile = () =>{
     const [page,setPage] = useState(1);
     const [userData,setUserData] = useState(undefined);
@@ -19,7 +20,8 @@ export const Profile = () =>{
     },[params])
 
     // console.log(params);
-    var { user } = useUserData();
+    var user = ReduxStore.getState();
+    // var { user } = useUserData();
     const getData =(id)=>{
         axios.get(`https://dummyjson.com/users/${id}`).then(res=>{
             setUserData(res.data);

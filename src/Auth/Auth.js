@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState    } from "react"
 import {  useNavigate } from "react-router-dom";
+import { setUser } from "../Store/Actions/UserActions";
+import { ReduxStore } from "../Store/ReduxStore";
 import { useUserData } from "../Store/Store";
 import './Auth.css'
 
 
 export const Auth = () => {
-    const {login} = useUserData();
+    // const {login} = useUserData();
     const navigate = useNavigate();
     const [title,setTitle] = useState('Log In');
     var [isSignUp,setIsSignUp]=useState(false);
@@ -25,8 +27,8 @@ export const Auth = () => {
             setIsLoading(true);
             axios.post('https://dummyjson.com/auth/login',{ username: userName, password: password }).then(res=>{
                     setIsLoading(false);
-                    login(res.data)
-                    localStorage.setItem(`token`, res.data.token);
+                    setUser(res.data);
+                    localStorage.setItem(`x-access-token`, res.data.token);
                     navigate('/home');
                 },err=>{
                     setIsLoading(false);
