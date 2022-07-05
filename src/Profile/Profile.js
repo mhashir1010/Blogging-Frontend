@@ -8,20 +8,29 @@ import axios from 'axios';
 import { Post } from '../Shared/Post';
 import { Loader } from '../Shared/Loader';
 import { ReduxStore } from '../Store/ReduxStore';
+import { setUser } from '../Store/Actions/UserActions';
 export const Profile = () =>{
     const [page,setPage] = useState(1);
     const [userData,setUserData] = useState(undefined);
     const params = useLocation();
 
+    const user = ReduxStore.getState().user;
     const [posts,setPosts] = useState(undefined);
+    
     useEffect(()=>{
-        // console.log(userData,params);
-        params.state!==null ? getData(params.state.userid): getData(user.id);
-    },[params])
+        params.state!==null ? getData(params.state.userid) : getCurrentUser();
+    },[params]);
 
-    // console.log(params);
-    var user = ReduxStore.getState();
-    // var { user } = useUserData();
+    const getCurrentUser = () =>{
+        console.log(user.id===undefined);
+        debugger;
+        if(user.id===undefined){
+            getData(localStorage.getItem('userId'));
+        }else{
+            setUserData(user);
+        }
+    }
+
     const getData =(id)=>{
         axios.get(`https://dummyjson.com/users/${id}`).then(res=>{
             setUserData(res.data);
@@ -30,22 +39,10 @@ export const Profile = () =>{
     const getPosts = (id) =>{
         axios.get(`https://dummyjson.com/posts/user/${id}`).then(res=>{
             const tempPosts = res.data.posts;
-            const promisesArray = [];
-            tempPosts.forEach((e,i) => {
-                promisesArray.push(axios.get(`https://dummyjson.com/users/${e.userId}`));
-            });
-            Promise.all(promisesArray).then(values => {
-                values.map((res, index) => {
-                    tempPosts[index].user = res.data;
-                });
-                setPosts(tempPosts);
-            }).catch(error => {
-                console.log(error);
-            });
+            setPosts(tempPosts.map(obj=>({...obj,user:userData})));
             })
     }
 
-    // console.log(userData);
     return(
     <>
     <Header />

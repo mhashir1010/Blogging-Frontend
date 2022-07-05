@@ -3,6 +3,7 @@ import { ReduxStore } from "../ReduxStore";
 import { useUserData } from "../Store";
 
 export const setUser = user =>{
+    debugger;
         if(user!==undefined){
             localStorage.setItem('userId',user.id);
             ReduxStore.dispatch({
@@ -12,7 +13,8 @@ export const setUser = user =>{
         }else{
             let id=localStorage.getItem('userId');
             axios.get(`https://dummyjson.com/users/${id}`).then(res=>{
-                setUser(res.data)
+                setUser(res.data);
+                debugger;
             })
         }
     
