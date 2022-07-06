@@ -1,9 +1,8 @@
 import axios from "axios";
-import { ReduxStore } from "../ReduxStore";
+import  ReduxStore  from "../ReduxStore";
 import { useUserData } from "../Store";
 
 export const setUser = user =>{
-    debugger;
         if(user!==undefined){
             localStorage.setItem('userId',user.id);
             ReduxStore.dispatch({
@@ -14,12 +13,16 @@ export const setUser = user =>{
             let id=localStorage.getItem('userId');
             axios.get(`https://dummyjson.com/users/${id}`).then(res=>{
                 setUser(res.data);
-                debugger;
             })
         }
     
 };
-
+export const updateUser = user =>{
+    ReduxStore.dispatch({
+        type:'UPDATE_USER',
+        payload: {user}
+    })
+}
 export const delUser = () =>{
         ReduxStore.dispatch({
             type : "DEL_USER",

@@ -7,8 +7,11 @@ export const userManagment = ( state = {} , action) =>{
             return state;
         }
         case 'DEL_USER' : {
-            console.log('chala');
             state={};
+        }
+        case 'UPDATE_USER' : {
+            state = payload;
+            return state;
         }
         default :
             return state;

@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Footer } from '../Layout/Footer';
 import { Header } from '../Layout/Header';
-import { useUserData } from '../Store/Store';
 import '../Profile/profile.css';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Post } from '../Shared/Post';
 import { Loader } from '../Shared/Loader';
-import { ReduxStore } from '../Store/ReduxStore';
-import { setUser } from '../Store/Actions/UserActions';
+import  ReduxStore  from '../Store/ReduxStore';
+import { setUser, updateUser } from '../Store/Actions/UserActions';
 export const Profile = () =>{
+    const [isEdit,setIsEdit] = useState(false);
+    var editableData = {};
     const [page,setPage] = useState(1);
     const [userData,setUserData] = useState(undefined);
     const params = useLocation();
@@ -21,9 +22,8 @@ export const Profile = () =>{
         params.state!==null ? getData(params.state.userid) : getCurrentUser();
     },[params]);
 
+
     const getCurrentUser = () =>{
-        console.log(user.id===undefined);
-        debugger;
         if(user.id===undefined){
             getData(localStorage.getItem('userId'));
         }else{
@@ -31,9 +31,16 @@ export const Profile = () =>{
         }
     }
 
+    const showData=() =>{
+        updateUser({...userData,...editableData})
+        setUserData({...userData,...editableData});
+    }
+
     const getData =(id)=>{
         axios.get(`https://dummyjson.com/users/${id}`).then(res=>{
             setUserData(res.data);
+            editableData=res.data;
+            console.log(editableData);
         })
     }
     const getPosts = (id) =>{
@@ -79,7 +86,13 @@ export const Profile = () =>{
                             </div>
                         </div>
                         {params.state === null && <div className="col-md-2">
-                            <input type="submit" className="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                            <input type="button" className="profile-edit-btn" 
+                            onClick={()=>{
+                                if (isEdit) { showData(); }
+                                setIsEdit(!isEdit);
+                            }
+                            }
+                            name="btnAddMore" value={isEdit?"Save Changes":"Edit Profile"}/>
                         </div>}
                     </div>
                     <div className="row">
@@ -105,23 +118,34 @@ export const Profile = () =>{
                                                     <label>Username</label>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <p>@{userData?.username}</p>
+                                                    {isEdit && <input value={editableData?.company?.department} onChange={(e)=>{editableData.username = e.target.value}} ></input>}
+                                                    {!isEdit && <p>@{userData?.username}</p>}
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6">
-                                                    <label>Name</label>
+                                                    <label >{isEdit?'First Name':'Name'}</label>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <p>{userData?.firstName+' '+userData?.lastName}</p>
+                                                    {isEdit && <input value={editableData?.firstName} onChange={(e)=>{editableData.firstName =e.target.value}} ></input>}
+                                                    {!isEdit && <p>{userData?.firstName+' '+userData?.lastName}</p>}
                                                 </div>
                                             </div>
+                                            {isEdit && <div className="row">
+                                                <div className="col-md-6">
+                                                    <label>Last Name</label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    {isEdit && <input value={editableData?.lastName} onChange={(e)=>{editableData.lastName = e.target.value}} ></input>}
+                                                </div>
+                                            </div>}
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <label>Email</label>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <p>{userData?.email}</p>
+                                                    {isEdit && <input type='email' value={editableData.email} onChange={(e)=>{editableData.email = e.target.value;}} ></input>}
+                                                    {!isEdit && <p>{userData?.email}</p>}
                                                 </div>
                                             </div>
                                             <div className="row">
@@ -129,7 +153,8 @@ export const Profile = () =>{
                                                     <label>Phone</label>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <p>{userData.phone}</p>
+                                                    {isEdit && <input value={editableData?.phone} onChange={(e)=>{editableData.phone = e.target.value;}} ></input>}
+                                                    {!isEdit && <p>{userData.phone}</p>}
                                                 </div>
                                             </div>
                                             <div className="row">
@@ -137,7 +162,8 @@ export const Profile = () =>{
                                                     <label>Profession</label>
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <p>{userData.company.department}</p>
+                                                    {isEdit && <input value={editableData?.company?.department} onChange={(e)=>{editableData['company'] ={ department:e.target.value}}} ></input>}
+                                                    {!isEdit && <p>{userData.company.department}</p>}
                                                 </div>
                                             </div>
                                 </div>

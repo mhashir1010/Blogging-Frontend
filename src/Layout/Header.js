@@ -1,7 +1,7 @@
 import { Container, Dropdown, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { delUser, setUser } from "../Store/Actions/UserActions";
-import { ReduxStore } from "../Store/ReduxStore";
+import  ReduxStore  from "../Store/ReduxStore";
 import { useUserData } from "../Store/Store";
 
 export const Header = () =>{
