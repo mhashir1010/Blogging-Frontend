@@ -13,10 +13,10 @@ export const Header = () =>{
 
     const Logout = ()=>
     {
-        localStorage.removeItem('x-access-token');
+        localStorage.removeItem('token');
         localStorage.removeItem('userId');
         delUser();
-        // logout();
+        Logout();
         navigate('/auth')
     }
     

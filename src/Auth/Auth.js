@@ -28,7 +28,7 @@ export const Auth = () => {
             axios.post('https://dummyjson.com/auth/login',{ username: userName, password: password }).then(res=>{
                     setIsLoading(false);
                     setUser(res.data);
-                    localStorage.setItem(`x-access-token`, res.data.token);
+                    localStorage.setItem(`token`, res.data.token);
                     navigate('/home');
                 },err=>{
                     setIsLoading(false);
