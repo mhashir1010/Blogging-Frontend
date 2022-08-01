@@ -16,7 +16,6 @@ export const Header = () =>{
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         delUser();
-        Logout();
         navigate('/auth')
     }
     

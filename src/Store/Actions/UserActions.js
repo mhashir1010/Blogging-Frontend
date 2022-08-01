@@ -23,8 +23,9 @@ export const updateUser = user =>{
         payload: {user}
     })
 }
-export const delUser = () =>{
+export const delUser = (user={}) =>{
         ReduxStore.dispatch({
             type : "DEL_USER",
+            payload : null
         })
 };
